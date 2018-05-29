@@ -10,11 +10,13 @@ class PostsController < ApplicationController
   # GET /posts/1
   # GET /posts/1.json
   def show
+    @post_attachements = @post.post_attachements.all
   end
 
   # GET /posts/new
   def new
     @post = Post.new
+    @post_attachement = @post.post_attachements.build
   end
 
   # GET /posts/1/edit
@@ -28,11 +30,14 @@ class PostsController < ApplicationController
 
     respond_to do |format|
       if @post.save
+        params[:post_attachements]['avatar'].each do |a|
+          @post_attachement = @post.post_attachements.create!(:avatar => a, :post_id => @post.id)
+        end
         format.html { redirect_to @post, notice: 'Post was successfully created.' }
-        format.json { render :show, status: :created, location: @post }
+      #   format.json { render :show, status: :created, location: @post }
       else
-        format.html { render :new }
-        format.json { render json: @post.errors, status: :unprocessable_entity }
+        format.html { render action: 'new' }
+      #   format.json { render json: @post.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -69,6 +74,6 @@ class PostsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def post_params
-      params.require(:post).permit(:title)
+      params.require(:post).permit(:title, post_attachements_atrributes:[:id, :post_id, :avatar])
     end
 end
