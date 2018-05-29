@@ -1,12 +1,31 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Listing Post Attachments</h1>
-
+<h1>GAME TIMER</h1>
+<h1>
+  <script type = "text/javascript">
+    function countdown() {
+      let count = 10;
+      let timerId = setInterval(function() {
+        count--;
+        let counter = count;
+        document.getElementById("countdown").innerHTML = counter;
+     
+        if(count == 0){
+          count = 10;
+        }
+      }, 1000);
+    }
+    countdown();
+  
+  </script>
+  <span id="countdown" style="font-weight: bold;"></span>  
+ 
+</h1>
 <table>
   <thead>
     <tr>
-      <th>Post</th>
-      <th>Avatar</th>
+      <th>Timer</th>
+      <th>Image</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -14,8 +33,8 @@
   <tbody>
     <% @post_attachments.each do |post_attachment| %>
       <tr>
-        <td><%= post_attachment.post_id %></td>
-        <td><%= post_attachment.avatar %></td>
+        <td><%= post_attachment.id  %></td>
+        <td><img src="<%= post_attachment.avatar %>" height="100" width="150"/></td>
         <td><%= link_to 'Show', post_attachment %></td>
         <td><%= link_to 'Edit', edit_post_attachment_path(post_attachment) %></td>
         <td><%= link_to 'Destroy', post_attachment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
@@ -27,3 +46,4 @@
 <br>
 
 <%= link_to 'New Post attachment', new_post_attachment_path %>
+<%= link_to 'Home', posts_path %>
