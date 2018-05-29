@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
-<h1>GAME TIMER</h1>
-<h1>
+<h1>GAME TIMER:
+
   <script type = "text/javascript">
     function countdown() {
       let count = 10;
@@ -10,7 +10,7 @@
         let counter = count;
         document.getElementById("countdown").innerHTML = counter;
      
-        if(count == 0){
+        if(count == 1){
           count = 10;
         }
       }, 1000);
@@ -29,6 +29,21 @@
       <th colspan="3"></th>
     </tr>
   </thead>
+  <% ary10 = Array.new %>
+  <% @post_attachments.each do |post_attachment| %>
+  <% ary10.push(post_attachment.id) %>
+
+   <% end %>
+   <p><%= p ary10 %></p> 
+   <h1><%= p ary10.length %><h1>
+
+   <% @post_attachments.each do |post_attachment| %>
+    <% if ary10.length < 10 %>
+    <% ary10.push(post_attachment.id) %>
+    <% end  %>
+   <% end %>
+   <%= p ary10.shuffle %>
+   
 
   <tbody>
     <% @post_attachments.each do |post_attachment| %>
@@ -39,6 +54,7 @@
         <td><%= link_to 'Edit', edit_post_attachment_path(post_attachment) %></td>
         <td><%= link_to 'Destroy', post_attachment, method: :delete, data: { confirm: 'Are you sure?' } %></td>
       </tr>
+    
     <% end %>
   </tbody>
 </table>
