@@ -11,6 +11,7 @@ class PostsController < ApplicationController
   # GET /posts/1.json
   def show
     @post_attachments = @post.post_attachments.all
+    @guess = Guess.new post_attachment: @post.post_attachments.first, index: 1
   end
 
   # GET /posts/new

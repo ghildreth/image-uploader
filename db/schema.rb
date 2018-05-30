@@ -11,7 +11,16 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180529163214) do
+ActiveRecord::Schema.define(version: 20180530011031) do
+
+  create_table "guesses", force: :cascade do |t|
+    t.integer  "post_attachment_id"
+    t.integer  "index"
+    t.datetime "created_at",         null: false
+    t.datetime "updated_at",         null: false
+  end
+
+  add_index "guesses", ["post_attachment_id"], name: "index_guesses_on_post_attachment_id"
 
   create_table "post_attachments", force: :cascade do |t|
     t.integer  "post_id"

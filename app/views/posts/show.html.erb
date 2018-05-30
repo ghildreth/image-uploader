@@ -1,5 +1,28 @@
 <p id="notice"><%= notice %></p>
+<%= form_for(@guess) do |f| %>
 
+<% end %>
+
+<p><%= @post.post_attachments.length %></p>
+  <script type = "text/javascript">
+    var attachments = <%= @post.post_attachments.to_json.html_safe %>;
+    function countdown() {
+      let count = 10;
+      let timerId = setInterval(function() {
+        count--;
+        let counter = count;
+        document.getElementById("countdown").innerHTML = counter;
+     
+        if(count == 1){
+          count = 10;
+        }
+      }, 1000);
+      
+    }
+    countdown();
+  </script>
+
+  <span id="countdown" style="font-weight: bold;"></span>
 <p>
   <strong>Title:</strong>
   <%= @post.title %>

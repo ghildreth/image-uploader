@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  resources :guesses, only: [:create]
   resources :post_attachments
   resources :posts
   # The priority is based upon order of creation: first created -> highest priority.
