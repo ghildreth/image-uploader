@@ -1,31 +1,55 @@
 <p id="notice"><%= notice %></p>
 <%= form_for(@guess) do |f| %>
-
 <% end %>
 
 <p><%= @post.post_attachments.length %></p>
   <script type = "text/javascript">
-    var attachments = <%= @post.post_attachments.to_json.html_safe %>;
+    <% ary10 = Array.new %>
+    <% @post.post_attachments.each do |post_attachment| %>
+      <% ary10.push(post_attachment) %>
+
+    <% end %>
+
+  <% @post.post_attachments.each do |post_attachment| %>
+    <% if ary10.length <= 10 %>
+      <% ary10.push(post_attachment) %>
+    <% end  %>
+  <% end %>
+
+  <% ary10.shuffle! %>
+
+    var attachments = <%= ary10.to_json.html_safe %>;
+    console.log('current length', attachments.length)
     console.log(attachments)
     function countdown() {
-      let count = 10;
+      let count = 11;
       let timerId = setInterval(function() {
         count--;
         let counter = count;
         document.getElementById("countdown").innerHTML = counter;
      
         if(count == 1){
-          count = 10;
+          count = 11;
         }
-      attachments.forEach((element)=>{
-
-       if(element.id === count - 1){
-         console.log(element.avatar.url);
-         let currentUrl = element.avatar.url;
+        for(item in attachments){
+          console.log(attachments[item])
+          console.log('i', item, 'c', count)
+          if(item == count){
+            let currentUrl = attachments[item].avatar.url
+            console.log('coo', currentUrl)
         let currentImg = document.getElementById("showImage");
         currentImg.innerHTML=`<img src=${currentUrl} height=300 width=300>`;
-       }
-      })  
+          }
+        }
+      // attachments.forEach((element)=>{
+
+      //  if(element.id === count){
+      //    console.log(element.avatar.url);
+      //    let currentUrl = element.avatar.url;
+      //   let currentImg = document.getElementById("showImage");
+      //   currentImg.innerHTML=`<img src=${currentUrl} height=300 width=300>`;
+      //  }
+      // })  
       }, 1000);
     }
     countdown();
@@ -40,4 +64,3 @@
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>
-<%= link_to 'Game', post_attachments_path %>
