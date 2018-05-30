@@ -6,6 +6,7 @@
 <p><%= @post.post_attachments.length %></p>
   <script type = "text/javascript">
     var attachments = <%= @post.post_attachments.to_json.html_safe %>;
+    console.log(attachments)
     function countdown() {
       let count = 10;
       let timerId = setInterval(function() {
@@ -16,13 +17,22 @@
         if(count == 1){
           count = 10;
         }
+      attachments.forEach((element)=>{
+
+       if(element.id === count - 1){
+         console.log(element.avatar.url);
+         let currentUrl = element.avatar.url;
+        let currentImg = document.getElementById("showImage");
+        currentImg.innerHTML=`<img src=${currentUrl} height=300 width=300>`;
+       }
+      })  
       }, 1000);
-      
     }
     countdown();
   </script>
 
   <span id="countdown" style="font-weight: bold;"></span>
+  <div id="showImage"></div>
 <p>
   <strong>Title:</strong>
   <%= @post.title %>
