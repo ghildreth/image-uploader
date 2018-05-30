@@ -19,7 +19,7 @@
  <%= f.fields_for :post_attachments do |p| %>
   <div class="field">
     <%= p.label :avatar %><br>
-    <%= p.file_field :avatar, :multiple => true, name: "post_attachments[avatar][]" %>
+    <%= p.file_field :avatar, :multiple => true, name: "post_attachments[avatar][]", :required => 'required' %>
     </div>
   <% end %>
 

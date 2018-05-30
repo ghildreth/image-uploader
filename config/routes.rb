@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get 'guesses/create'
   resources :guesses, only: [:create]
   resources :post_attachments
   resources :posts

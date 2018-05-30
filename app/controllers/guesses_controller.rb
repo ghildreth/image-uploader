@@ -16,7 +16,7 @@ class GuessesController < ApplicationController
 
   private
   def guess_params
-    params.require(:guess).permit(:post_attachment_id, :index)
+    params.require(:guess).permit(:post_attachment_id, :index, :url)
   end
 
 end

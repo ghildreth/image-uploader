@@ -1,8 +1,13 @@
 <p id="notice"><%= notice %></p>
 <%= form_for(@guess) do |f| %>
+
+  <%= f.hidden_field :post_attachment_id %><br/>
+
+  <%= f.hidden_field :index %><br />
+  <%= f.submit %>
+
 <% end %>
 
-<p><%= @post.post_attachments.length %></p>
   <script type = "text/javascript">
     <% ary10 = Array.new %>
     <% @post.post_attachments.each do |post_attachment| %>
@@ -11,45 +16,50 @@
     <% end %>
 
   <% @post.post_attachments.each do |post_attachment| %>
-    <% if ary10.length <= 10 %>
+    <% while ary10.length < 10 %>
       <% ary10.push(post_attachment) %>
     <% end  %>
   <% end %>
 
   <% ary10.shuffle! %>
 
+
     var attachments = <%= ary10.to_json.html_safe %>;
     console.log('current length', attachments.length)
     console.log(attachments)
+    
     function countdown() {
-      let count = 11;
+      let currentImg = document.getElementById("showImage");
+      let count = 9;
       let timerId = setInterval(function() {
+      let guessIndexField = document.getElementById("guess_index");
+      let guessPostAttachmentIdField = document.getElementById("guess_post_attachment_id");
+
         count--;
-        let counter = count;
+        let counter = count + 2;
         document.getElementById("countdown").innerHTML = counter;
      
-        if(count == 1){
-          count = 11;
+        if(count == -1){
+          count = 9;
         }
-        for(item in attachments){
-          console.log(attachments[item])
-          console.log('i', item, 'c', count)
-          if(item == count){
-            let currentUrl = attachments[item].avatar.url
-            console.log('coo', currentUrl)
+        // for(item in attachments){
+        //   console.log(attachments[item]) 
+          
+        //   if(item == count){
+        //     console.log(item, count)
+        //     let currentUrl = attachments[item].avatar.url
+        
+        //     currentImg.innerHTML=`<img src=${currentUrl} height=300 width=300>`;
+        //     document.getElementById("guess_post_attachment_id").value = attachments[item].id;
+        //     // attachments[item].avatar.url
+        //     document.getElementById("guess_index").value = count;
+        //   }
+        // } 
         let currentImg = document.getElementById("showImage");
-        currentImg.innerHTML=`<img src=${currentUrl} height=300 width=300>`;
-          }
-        }
-      // attachments.forEach((element)=>{
-
-      //  if(element.id === count){
-      //    console.log(element.avatar.url);
-      //    let currentUrl = element.avatar.url;
-      //   let currentImg = document.getElementById("showImage");
-      //   currentImg.innerHTML=`<img src=${currentUrl} height=300 width=300>`;
-      //  }
-      // })  
+        let currentAttachment = attachments[count];
+        currentImg.innerHTML=`<img src=${currentAttachment.avatar.url} height=300 width=350>`;
+        guessPostAttachmentIdField.value = currentAttachment.id;
+        guessIndexField.value = count;
       }, 1000);
     }
     countdown();
@@ -57,10 +67,23 @@
 
   <span id="countdown" style="font-weight: bold;"></span>
   <div id="showImage"></div>
+
 <p>
   <strong>Title:</strong>
   <%= @post.title %>
 </p>
+<% @guesses.each do |g|%>
+<table style="width:100%">
+  <tr>
+    <th>Timer</th>
+    <th> Image </th>
+  </tr>
+  <tr>
+    <td><%=  g.index %></td>
+    <td><%=  g.post_attachment_id %></td>
+  </tr>
+</table>
+<% end %>
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>
