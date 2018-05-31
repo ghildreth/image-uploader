@@ -9,7 +9,7 @@
   <%= @post.title %>
 </p>
 <% @guesses.each do |g|%>
-  <table style="width:100%">
+  <table class="index" style="width:100%">
     <tr>
       <td class="index"><%=  g.index %></td>
       <td class"url"><img src=<%=  g.post_attachment.avatar.url %> height=100 width=100/></td>
@@ -58,11 +58,11 @@
       .then(function(response){ return response.json() })
   }
 
-    sendData().then(response => {
-      console.log('hi', response)
-      let textnode = document.createTextNode(response.index);
-      document.getElementsByClassName("index")[0].appendChild(textnode)
-    }) 
+    // sendData().then(response => {
+    //   console.log('hi', response)
+    //   let textnode = document.createTextNode(response.index);
+    //   document.getElementsByClassName("index")[0].appendChild(textnode)
+    // }) 
 
     let timerId = setInterval(function() {
 
@@ -79,7 +79,15 @@
 
     }, 1000);
 
-    document.getElementById("play").addEventListener("click", sendData);
+    document.getElementById("play").addEventListener("click", event => {
+      sendData().then(response => {
+      console.log(response)
+      let node = document.createElement('td')
+      let textnode = document.createTextNode(response.index);
+      node.appendChild(textnode)
+      document.getElementsByClassName("index")[0].appendChild(node)
+      }) 
+    });
   }
   
   countdown();
