@@ -8,14 +8,21 @@
   <strong>Title:</strong>
   <%= @post.title %>
 </p>
-<% @guesses.each do |g|%>
-  <table class="index" style="width:100%">
-    <tr>
-      <td class="index"><%=  g.index %></td>
-      <td class"url"><img src=<%=  g.post_attachment.avatar.url %> height=100 width=100/></td>
-    </tr>
+
+  <table style="width:100%">
+  <tr>
+    <th>Timer</th>
+    <th>Image</th>
+  </tr>
+  <tr>
+    <td class='index'><br>
+  </tr>
+  <tr>
+    <td class='img'><br>
+  </tr>
+    
   </table>
-<% end %>
+
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
 <%= link_to 'Back', posts_path %>
@@ -36,8 +43,6 @@
   <% ary10.shuffle! %>
 
   var attachments = <%= ary10.to_json.html_safe %>;
-  console.log('current length', attachments.length)
-  console.log(attachments)
     let currentImg = document.getElementById("showImage");
     let count = 9;
     let currentAttachment = attachments[count];
@@ -57,13 +62,6 @@
       })
       .then(function(response){ return response.json() })
   }
-
-    // sendData().then(response => {
-    //   console.log('hi', response)
-    //   let textnode = document.createTextNode(response.index);
-    //   document.getElementsByClassName("index")[0].appendChild(textnode)
-    // }) 
-
     let timerId = setInterval(function() {
 
       count--;
@@ -75,17 +73,21 @@
       }
       currentAttachment = attachments[count];
       currentImg.innerHTML=`<img src=${currentAttachment.avatar.url} height=300 width=350>`;
-      // attribute.source
 
     }, 1000);
 
     document.getElementById("play").addEventListener("click", event => {
       sendData().then(response => {
       console.log(response)
-      let node = document.createElement('td')
-      let textnode = document.createTextNode(response.index);
-      node.appendChild(textnode)
-      document.getElementsByClassName("index")[0].appendChild(node)
+      let imgNode = document.createElement('td')
+      let srcNode = document.createTextNode(currentAttachment.avatar.url)
+      imgNode.appendChild(srcNode)
+      document.getElementsByClassName("img")[0].appendChild(imgNode).innerHTML=`<img src=${currentAttachment.avatar.url} height=100 width=100>`
+      let indexNode = document.createElement('td')
+      let textnode = document.createTextNode(response.index)
+      indexNode.appendChild(textnode)
+      document.getElementsByClassName("index")[0].appendChild(indexNode)
+      console.log(currentAttachment.avatar.url)
       }) 
     });
   }
