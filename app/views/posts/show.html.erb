@@ -1,8 +1,6 @@
 <p id="notice"><%= notice %></p>
 
   <button type="button" id="play">Play</button>
-
-
   <span id="countdown" style="font-weight: bold;"></span>
   <div id="showImage"></div>
 
@@ -11,16 +9,12 @@
   <%= @post.title %>
 </p>
 <% @guesses.each do |g|%>
-<table style="width:100%">
-  <tr>
-    <th>Timer</th>
-    <th> Image </th>
-  </tr>
-  <tr>
-    <td><%=  g.index %></td>
-    <td><img src=<%=  g.post_attachment.avatar.url %> height=100 width=100/></td>
-  </tr>
-</table>
+  <table style="width:100%">
+    <tr>
+      <td class="index"><%=  g.index %></td>
+      <td class"url"><img src=<%=  g.post_attachment.avatar.url %> height=100 width=100/></td>
+    </tr>
+  </table>
 <% end %>
 
 <%= link_to 'Edit', edit_post_path(@post) %> |
@@ -51,7 +45,7 @@
   function countdown() {
     function sendData(){
 
-      fetch('/guesses.json', {
+      return fetch('/guesses.json', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json'},
         body: JSON.stringify({
@@ -60,18 +54,15 @@
             index: count
           }
         })
-      }).then(function(response){ return response.json() });
-      
-    }
+      })
+      .then(function(response){ return response.json() })
+  }
 
-    // function getTable(){
-    //   return fetch('/guesses.json?post_id=3')
-    //   .then(function(response){ return response.json(); })
-    //   .then(function(data){
-    //   // Refresh table from data
-    //   console.log('this is the data', data)
-    //   });
-
+    sendData().then(response => {
+      console.log('hi', response)
+      let textnode = document.createTextNode(response.index);
+      document.getElementsByClassName("index")[0].appendChild(textnode)
+    }) 
 
     let timerId = setInterval(function() {
 
@@ -87,12 +78,7 @@
       // attribute.source
 
     }, 1000);
-    // document.getElementById("play").addEventListener("click", function(){
-    //   sendData().then(getTable);
-    // });
-    sendData().then(response => {
-      console.log(response)
-    })
+
     document.getElementById("play").addEventListener("click", sendData);
   }
   
