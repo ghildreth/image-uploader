@@ -6,7 +6,7 @@ class GuessesController < ApplicationController
     respond_to do |format|
       if @guess.save
         format.html { redirect_to @guess.post_attachment.post, notice: 'Post attachment was successfully created.' }
-        format.json { render :show, status: :created, location: @guess }
+        format.json { render json: @guess, status: :created}
       else
         format.html { render :new }
         format.json { render json: @guess.errors, status: :unprocessable_entity }
